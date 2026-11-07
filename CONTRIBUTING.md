@@ -32,11 +32,11 @@ pnpm release --release patch
 Install the latest version from the default branch:
 
 ```sh
-npx skills add repo/pkg-placeholder --skill <skill-name>
+npx skills add OSpoon/system-info-skills --skill system-info
 ```
 
 Pin a released version by using its tag in the GitHub tree URL:
 
 ```sh
-npx skills add https://github.com/repo/pkg-placeholder/tree/v0.1.0/skills/ping
+npx skills add https://github.com/OSpoon/system-info-skills/tree/v0.1.0/skills/system-info
 ```

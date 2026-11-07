@@ -1,8 +1,8 @@
-# pkg-placeholder
+# system-info-skills
 
 [![License][license-src]][license-href]
 
-_description_
+System info skills
 
 ## Initialize
 
@@ -11,12 +11,12 @@ After creating a repository from this template, run `pnpm run init` to set its p
 ## Install
 
 ```sh
-npx skills add repo/pkg-placeholder --skill <skill-name>
+npx skills add OSpoon/system-info-skills --skill system-info
 ```
 
 ## Features
 
-_features_
+- **system-info** — Read host OS, CPU, physical memory, current working-directory filesystem capacity, and local network interfaces. The helper is read-only and does not test internet connectivity.
 
 ## License
 
@@ -24,5 +24,5 @@ _features_
 
 <!-- Badges -->
 
-[license-src]: https://img.shields.io/github/license/OSpoon/pkg-placeholder.svg?style=flat&colorA=080f12&colorB=1fa669
-[license-href]: https://github.com/OSpoon/pkg-placeholder/blob/main/LICENSE.md
+[license-src]: https://img.shields.io/github/license/OSpoon/system-info-skills.svg?style=flat&colorA=080f12&colorB=1fa669
+[license-href]: https://github.com/OSpoon/system-info-skills/blob/main/LICENSE.md

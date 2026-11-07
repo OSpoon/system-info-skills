@@ -1,4 +1,6 @@
-import process from "node:process";
+import process$1 from "node:process";
+import { statfs } from "node:fs/promises";
+import os from "node:os";
 //#region \0rolldown/runtime.js
 var __create = Object.create;
 var __defProp = Object.defineProperty;
@@ -97,13 +99,110 @@ var import_lib = /* @__PURE__ */ __toESM((/* @__PURE__ */ __commonJSMin(((export
 		return out;
 	};
 })))(), 1);
-function ping(_input = "ping") {
-	return "pong";
+const categories = [
+	"os",
+	"cpu",
+	"memory",
+	"disk",
+	"network"
+];
+function isSystemInfoCategory(value) {
+	return value === "all" || categories.includes(value);
+}
+function toGiB(bytes) {
+	return Math.round(bytes / 1024 ** 3 * 100) / 100;
+}
+function getOsInfo() {
+	return {
+		hostname: os.hostname(),
+		type: os.type(),
+		platform: os.platform(),
+		release: os.release(),
+		version: os.version(),
+		architecture: os.arch(),
+		uptimeSeconds: Math.floor(os.uptime())
+	};
+}
+function getCpuInfo() {
+	const cpus = os.cpus();
+	return {
+		model: cpus[0]?.model ?? null,
+		logicalCores: cpus.length,
+		loadAverage: os.platform() === "win32" ? null : os.loadavg()
+	};
+}
+function getMemoryInfo() {
+	const totalBytes = os.totalmem();
+	const availableBytes = os.freemem();
+	const usedBytes = totalBytes - availableBytes;
+	return {
+		totalBytes,
+		availableBytes,
+		usedBytes,
+		usedPercent: totalBytes ? Math.round(usedBytes / totalBytes * 1e3) / 10 : 0,
+		totalGiB: toGiB(totalBytes),
+		availableGiB: toGiB(availableBytes)
+	};
+}
+async function getDiskInfo() {
+	const path = process.cwd();
+	try {
+		const filesystem = await statfs(path);
+		const totalBytes = filesystem.blocks * filesystem.bsize;
+		const availableBytes = filesystem.bavail * filesystem.bsize;
+		const usedBytes = totalBytes - availableBytes;
+		return {
+			path,
+			totalBytes,
+			availableBytes,
+			usedBytes,
+			usedPercent: totalBytes ? Math.round(usedBytes / totalBytes * 1e3) / 10 : 0,
+			totalGiB: toGiB(totalBytes),
+			availableGiB: toGiB(availableBytes)
+		};
+	} catch {
+		return {
+			path,
+			available: false
+		};
+	}
+}
+function getNetworkInfo() {
+	return {
+		interfaces: Object.entries(os.networkInterfaces()).flatMap(([name, addresses]) => (addresses ?? []).map(({ address, netmask, family, cidr, internal }) => ({
+			name,
+			address,
+			netmask,
+			family,
+			cidr,
+			internal
+		}))),
+		internetConnectivityTested: false
+	};
+}
+async function getSystemInfo(category) {
+	if (category === "all") return {
+		os: getOsInfo(),
+		cpu: getCpuInfo(),
+		memory: getMemoryInfo(),
+		disk: await getDiskInfo(),
+		network: getNetworkInfo()
+	};
+	switch (category) {
+		case "os": return getOsInfo();
+		case "cpu": return getCpuInfo();
+		case "memory": return getMemoryInfo();
+		case "disk": return getDiskInfo();
+		case "network": return getNetworkInfo();
+	}
 }
 //#endregion
 //#region src/cli.ts
-const { _: [input = "ping"] } = (0, import_lib.default)(process.argv.slice(2));
-const output = ping(input);
-console.log(output);
+const args = (0, import_lib.default)(process$1.argv.slice(2));
+const [category = "all", ...extra] = args._;
+if (extra.length || Object.keys(args).some((key) => key !== "_") || !isSystemInfoCategory(category)) {
+	console.error("Usage: system-info [os|cpu|memory|disk|network|all]");
+	process$1.exitCode = 2;
+} else console.log(JSON.stringify(await getSystemInfo(category), null, 2));
 //#endregion
 export {};

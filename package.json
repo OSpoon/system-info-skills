@@ -1,23 +1,23 @@
 {
-  "name": "pkg-placeholder",
+  "name": "system-info-skills",
   "type": "module",
   "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@12.8.1",
-  "description": "_description_",
+  "description": "System info skills",
   "author": {
     "name": "OSpoon",
     "url": "https://github.com/OSpoon"
   },
   "license": "MIT",
   "funding": "https://github.com/sponsors/OSpoon",
-  "homepage": "https://github.com/OSpoon/pkg-placeholder#readme",
+  "homepage": "https://github.com/OSpoon/system-info-skills#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/OSpoon/pkg-placeholder.git"
+    "url": "git+https://github.com/OSpoon/system-info-skills.git"
   },
   "bugs": {
-    "url": "https://github.com/OSpoon/pkg-placeholder/issues"
+    "url": "https://github.com/OSpoon/system-info-skills/issues"
   },
   "keywords": [
     "agent-skills",
