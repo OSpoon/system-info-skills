@@ -1,0 +1,86 @@
+{
+  "name": "pkg-placeholder",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@12.8.1",
+  "description": "_description_",
+  "author": {
+    "name": "OSpoon",
+    "url": "https://github.com/OSpoon"
+  },
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/OSpoon",
+  "homepage": "https://github.com/OSpoon/pkg-placeholder#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OSpoon/pkg-placeholder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/OSpoon/pkg-placeholder/issues"
+  },
+  "keywords": [
+    "agent-skills",
+    "skills",
+    "typescript"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "knip": "knip",
+    "lint": "eslint --cache",
+    "release": "bumpp",
+    "version": "changelogen --output CHANGELOG.md",
+    "init": "tsx scripts/init.ts",
+    "start": "tsx src/cli.ts",
+    "test": "pnpm run build && vitest",
+    "typecheck": "tsc",
+    "ci": "pnpm run lint && pnpm run typecheck && pnpm run knip && pnpm run test --run",
+    "prepare": "git config core.hooksPath .githooks && simple-git-hooks && skills experimental_sync -y"
+  },
+  "scripts-info": {
+    "build": "Bundle the skill's TypeScript example",
+    "dev": "Rebuild on change during development",
+    "init": "Initialize project metadata",
+    "knip": "Find unused files, exports and dependencies",
+    "lint": "Check for code style issues",
+    "release": "Build, generate a changelog, bump the skill version, commit and tag",
+    "start": "Run the skill command",
+    "test": "Run the test suite",
+    "typecheck": "Check types",
+    "version": "Generate the release changelog",
+    "ci": "Run the full continuous integration pipeline",
+    "prepare": "Set up git hooks and development skills"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "catalog:cli",
+    "@antfu/skills": "catalog:agentic",
+    "@antfu/utils": "catalog:inlined",
+    "@clack/prompts": "catalog:cli",
+    "@types/node": "catalog:types",
+    "bumpp": "catalog:cli",
+    "changelogen": "catalog:cli",
+    "eslint": "catalog:cli",
+    "eslint-plugin-slop": "catalog:cli",
+    "eslint-plugin-sonarjs": "catalog:cli",
+    "knip": "catalog:cli",
+    "mri": "catalog:cli",
+    "nano-staged": "catalog:cli",
+    "picocolors": "catalog:cli",
+    "simple-git-hooks": "catalog:cli",
+    "skills": "catalog:agentic",
+    "taze": "catalog:cli",
+    "tsdown": "catalog:cli",
+    "tsx": "catalog:cli",
+    "typescript": "catalog:cli",
+    "vite": "catalog:cli",
+    "vitest": "catalog:testing"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm i --frozen-lockfile --ignore-scripts --offline && pnpm run ci && pnpx nano-staged"
+  },
+  "nano-staged": {
+    "*.{js,ts,tsx,json,css,md,yaml,vue}": "eslint --fix --no-warn-ignored"
+  }
+}
